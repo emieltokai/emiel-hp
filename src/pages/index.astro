@@ -1284,8 +1284,10 @@
     .char-3 { width: 100px; }
     .about-grid  { grid-template-columns: 1fr; }
     .access-grid { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: repeat(2,1fr); }
-    .feat-card:nth-child(6) { grid-column: span 2; max-width: 340px; margin: 0 auto; width: 100%; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feat-card { padding: 28px 24px; }
+    .feat-card h3 { font-size: 1.05rem; }
+    .feat-card p  { font-size: 0.9rem; line-height: 1.75; }
     .timeline::before { left: 68px; }
     .tl-time { width: 60px; font-size: 0.88rem; }
     .cta-btns { flex-direction: column; align-items: center; }
@@ -1297,7 +1299,6 @@
     .hero-photo { max-width: 320px; }
   }
   @media (max-width: 480px) {
-    .features-grid { grid-template-columns: 1fr; }
     .hero-title { font-size: 1.6rem; white-space: normal; }
     .hero-btns { flex-direction: column; }
     .hero-btns .btn-lg { justify-content: center; }
