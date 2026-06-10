@@ -43,6 +43,27 @@ const ogImage = `${siteUrl}/image/外観.png`;
     <!-- ファビコン -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+	<!-- 構造化データ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ChildCare",
+      "name": "児童発達支援エミエル",
+      "description": "愛知県東海市の児童発達支援施設。0〜6歳のお子さまの発達をサポートします。",
+      "url": "https://nextgrowth1.com",
+      "telephone": "052-627-6333",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "名和町山畑3番地1",
+        "addressLocality": "東海市",
+        "addressRegion": "愛知県",
+        "postalCode": "476-0002",
+        "addressCountry": "JP"
+      },
+      "openingHours": ["Mo-We 09:00-17:00", "Fr 09:00-17:00"],
+      "image": "https://nextgrowth1.com/image/外観.png"
+    }
+    </script>
   </head>
   <body>
     <slot />
