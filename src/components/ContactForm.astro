@@ -1,0 +1,113 @@
+<section class="contact" id="contact">
+  <h2>お問い合わせ</h2>
+  <p class="contact-lead">
+    見学・ご相談はLINEまたはお電話のほか、こちらのフォームからも受け付けています。
+  </p>
+  <form
+    name="contact"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/thanks"
+  >
+    <input type="hidden" name="form-name" value="contact" />
+    <p class="hidden" style="display:none">
+      <label>入力しないでください: <input name="bot-field" /></label>
+    </p>
+
+    <div class="form-group">
+      <label for="name">お名前 <span class="req">必須</span></label>
+      <input type="text" id="name" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">お電話番号</label>
+      <input type="tel" id="phone" name="phone" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">メールアドレス <span class="req">必須</span></label>
+      <input type="email" id="email" name="email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="type">お問い合わせ内容</label>
+      <select id="type" name="type">
+        <option>見学を希望する</option>
+        <option>利用について相談したい</option>
+        <option>空き状況を知りたい</option>
+        <option>その他</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="message">メッセージ <span class="req">必須</span></label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">送信する</button>
+  </form>
+</section>
+
+<style>
+  .contact {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 64px 20px;
+  }
+  .contact h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+  }
+  .contact-lead {
+    text-align: center;
+    color: #666;
+    margin-bottom: 32px;
+    line-height: 1.8;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .req {
+    background: #f08080;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-left: 6px;
+    font-weight: normal;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background: #fff;
+  }
+  .submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #f08080;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 28px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .submit-btn:hover {
+    opacity: 0.85;
+  }
+</style>
