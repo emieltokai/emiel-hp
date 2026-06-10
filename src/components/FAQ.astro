@@ -1,0 +1,119 @@
+---
+const faqs = [
+  {
+    q: "対象年齢は何歳ですか？",
+    a: "0歳〜6歳の未就学のお子さまが対象です。発達が気になる段階からのご相談も歓迎しています。",
+  },
+  {
+    q: "利用料金はいくらですか？",
+    a: "児童発達支援は国の制度により原則1割負担です。世帯所得に応じて月額上限があり、住民税非課税世帯は0円、一般的な世帯は月額4,600円、所得の高い世帯は月額37,200円が上限です。また、3歳〜5歳のお子さまは幼児教育・保育の無償化により利用料は無料です。ご利用には市町村発行の受給者証が必要です。",
+  },
+  {
+    q: "受給者証を持っていなくても相談できますか？",
+    a: "はい、可能です。受給者証の申請方法からサポートいたしますので、まずはお気軽にご相談ください。",
+  },
+  {
+    q: "送迎はありますか？",
+    a: "はい、送迎を行っています。対応エリアについてはご相談ください。",
+  },
+  {
+    q: "保育園や幼稚園への送迎もできますか？",
+    a: "はい、可能です。保育園・幼稚園との併用にも対応しています。",
+  },
+  {
+    q: "対応エリアはどこですか？",
+    a: "東海市を中心に、知多市・大府市・名古屋市南区・緑区に対応しています。",
+  },
+  {
+    q: "どんな療育をしていますか？",
+    a: "個別療育と集団療育の両方を行っています。言語聴覚士（ST）が在籍しており、ことばの発達支援など専門的な療育を提供しています。",
+  },
+  {
+    q: "療育時間はどのくらいですか？",
+    a: "お子さまやご家庭の状況に合わせて柔軟に対応可能です。お気軽にご相談ください。",
+  },
+  {
+    q: "昼食はどうなりますか？",
+    a: "お弁当の持参・施設での提供のどちらも可能です。",
+  },
+  {
+    q: "親も一緒に参加しますか？",
+    a: "母子分離型です。お子さまをお預かりして療育を行いますので、保護者さまの時間も大切にしていただけます。",
+  },
+  {
+    q: "土曜日も利用できますか？",
+    a: "はい、土曜日も営業しています。空き状況についてはお問い合わせください。",
+  },
+  {
+    q: "見学はできますか？",
+    a: "はい、随時受け付けています。LINEまたはお電話（052-627-6333）でお気軽にお問い合わせください。",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<section class="faq" id="faq">
+  <h2>よくあるご質問</h2>
+  <div class="faq-list">
+    {
+      faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<style>
+  .faq {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 20px;
+  }
+  .faq h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 32px;
+  }
+  .faq-list details {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .faq-list summary {
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 28px;
+  }
+  .faq-list summary::after {
+    content: "＋";
+    position: absolute;
+    right: 0;
+    color: #f08080;
+  }
+  .faq-list details[open] summary::after {
+    content: "－";
+  }
+  .faq-list p {
+    margin: 12px 0 0;
+    line-height: 1.8;
+    color: #555;
+  }
+</style>
