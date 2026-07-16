@@ -1,7 +1,13 @@
 ---
 // エミエル HP メインページ
+import { getCollection } from 'astro:content';
 import FAQ from '../components/FAQ.astro';
 import ContactForm from '../components/ContactForm.astro';
+
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
 <!DOCTYPE html>
@@ -72,6 +78,7 @@ import ContactForm from '../components/ContactForm.astro';
       <li><a href="#schedule">1日の流れ</a></li>
       <li><a href="#availability">空き状況</a></li>
       <li><a href="#access">アクセス</a></li>
+      <li><a href="/blog">ブログ</a></li>
     </ul>
     <a href="https://lin.ee/TfyyTxI" target="_blank" rel="noopener" class="btn-line nav-line">LINEで相談</a>
     <button class="hamburger" id="hamburger" aria-label="メニュー">
@@ -87,6 +94,7 @@ import ContactForm from '../components/ContactForm.astro';
       <li><a href="#schedule" onclick="closeMobile()">1日の流れ</a></li>
       <li><a href="#availability" onclick="closeMobile()">空き状況</a></li>
       <li><a href="#access" onclick="closeMobile()">アクセス</a></li>
+      <li><a href="/blog" onclick="closeMobile()">ブログ</a></li>
       <li><a href="https://lin.ee/TfyyTxI" target="_blank" rel="noopener" class="btn-line mobile-line" onclick="closeMobile()">LINEで相談</a></li>
     </ul>
   </div>
@@ -690,6 +698,53 @@ import ContactForm from '../components/ContactForm.astro';
   </div>
 </section>
 
+<!-- ========== BLOG LATEST ========== -->
+{recentPosts.length > 0 && (
+  <section id="blog" class="section-blog">
+    <div class="container">
+      <h2 class="section-title"><span class="title-icon">✏️</span>スタッフブログ</h2>
+      <p class="section-sub">施設の日常・発達支援コラムをお届けします</p>
+      <div class="blog-grid-home">
+        {recentPosts.map(post => (
+          <article class="blog-card-home">
+            {post.data.heroImage ? (
+              <a href={`/blog/${post.id}`} class="blog-card-img-wrap">
+                <img src={post.data.heroImage} alt={post.data.title} class="blog-card-img" loading="lazy" />
+              </a>
+            ) : (
+              <a href={`/blog/${post.id}`} class="blog-card-img-wrap blog-card-no-img" aria-hidden="true">
+                <span>✏️</span>
+              </a>
+            )}
+            <div class="blog-card-body">
+              {post.data.tags.length > 0 && (
+                <div class="blog-card-tags">
+                  {post.data.tags.map(tag => (
+                    <span class="blog-tag">{tag}</span>
+                  ))}
+                </div>
+              )}
+              <h3 class="blog-card-title">
+                <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              </h3>
+              <p class="blog-card-desc">{post.data.description}</p>
+              <div class="blog-card-footer">
+                <time class="blog-card-date" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                <a href={`/blog/${post.id}`} class="blog-card-link">続きを読む →</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="blog-more-wrap">
+        <a href="/blog" class="btn-blog">📝 ブログをもっと読む</a>
+      </div>
+    </div>
+  </section>
+)}
+
 <FAQ />
 <ContactForm />
 
@@ -711,6 +766,7 @@ import ContactForm from '../components/ContactForm.astro';
       <a href="#availability">空き状況</a>
       <a href="#schedule">1日の流れ</a>
       <a href="#access">アクセス</a>
+      <a href="/blog">ブログ</a>
       <a href="#contact">お問い合わせ</a>
     </nav>
     <div class="footer-info">
@@ -1350,6 +1406,61 @@ import ContactForm from '../components/ContactForm.astro';
     .flower-2, .flower-3 { display: none; }
     .deco { display: none; }
   }
+
+  /* ===== BLOG LATEST ===== */
+  .section-blog { background: #fff; padding: 80px 0 100px; position: relative; }
+  .blog-grid-home {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    margin-bottom: 44px;
+  }
+  .blog-card-home {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    overflow: hidden; display: flex; flex-direction: column;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .blog-card-home:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.11); }
+  .blog-card-img-wrap { display: block; height: 180px; overflow: hidden; }
+  .blog-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .blog-card-img-wrap:hover .blog-card-img { transform: scale(1.04); }
+  .blog-card-no-img {
+    background: linear-gradient(135deg, #ffe4ee, #e8f8ff);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.8rem;
+  }
+  .blog-card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 9px; }
+  .blog-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .blog-tag {
+    background: #FFE8ED; color: #FF6B8A;
+    font-size: 0.72rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .blog-card-title { font-size: 0.97rem; font-weight: 800; color: #333; line-height: 1.5; }
+  .blog-card-title a { transition: color 0.2s; }
+  .blog-card-title a:hover { color: #FF6B8A; }
+  .blog-card-desc {
+    font-size: 0.83rem; color: #666; line-height: 1.7; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-card-footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto;
+  }
+  .blog-card-date { font-size: 0.76rem; color: #bbb; }
+  .blog-card-link { font-size: 0.8rem; font-weight: 700; color: #FF6B8A; white-space: nowrap; transition: color 0.2s; }
+  .blog-card-link:hover { color: #e05478; }
+  .blog-more-wrap { text-align: center; }
+  .btn-blog {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; color: #FF6B8A;
+    border: 2.5px solid #FF6B8A;
+    padding: 12px 28px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+  }
+  .btn-blog:hover { transform: translateY(-3px); background: #FF6B8A; color: #fff; }
+  @media (max-width: 900px) { .blog-grid-home { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 580px) { .blog-grid-home { grid-template-columns: 1fr; } }
 </style>
 
 </body>

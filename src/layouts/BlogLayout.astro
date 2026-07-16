@@ -1,0 +1,230 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage = '/image/外観.png' } = Astro.props;
+const siteUrl = 'https://nextgrowth1.com';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={siteUrl} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:site_name" content="児童発達支援エミエル" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="/image/ロゴ大.jpg" alt="児童発達支援 エミエル" class="nav-logo-img" />
+      <span class="nav-logo-sub">愛知県東海市の発達支援施設</span>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="/">ホーム</a></li>
+      <li><a href="/#about">施設について</a></li>
+      <li><a href="/#features">選ばれる理由</a></li>
+      <li><a href="/#availability">空き状況</a></li>
+      <li><a href="/#access">アクセス</a></li>
+      <li><a href="/blog" class="nav-active">ブログ</a></li>
+    </ul>
+    <a href="https://lin.ee/TfyyTxI" target="_blank" rel="noopener" class="btn-line nav-line">LINEで相談</a>
+    <button class="hamburger" id="hamburger" aria-label="メニュー" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <ul>
+      <li><a href="/" onclick="closeMobile()">ホーム</a></li>
+      <li><a href="/#about" onclick="closeMobile()">施設について</a></li>
+      <li><a href="/#features" onclick="closeMobile()">選ばれる理由</a></li>
+      <li><a href="/#availability" onclick="closeMobile()">空き状況</a></li>
+      <li><a href="/#access" onclick="closeMobile()">アクセス</a></li>
+      <li><a href="/blog" onclick="closeMobile()">ブログ</a></li>
+      <li><a href="https://lin.ee/TfyyTxI" target="_blank" rel="noopener" class="btn-line mobile-line" onclick="closeMobile()">LINEで相談</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <slot />
+</main>
+
+<footer id="footer">
+  <div class="footer-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,0 L0,0 Z" fill="#E8F8FF"/>
+    </svg>
+  </div>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <span>🌸</span>
+      <span>児童発達支援 エミエル</span>
+    </div>
+    <nav class="footer-nav" aria-label="フッターナビ">
+      <a href="/">ホーム</a>
+      <a href="/#about">施設について</a>
+      <a href="/#features">選ばれる理由</a>
+      <a href="/blog">ブログ</a>
+      <a href="/#access">アクセス</a>
+      <a href="/#contact">お問い合わせ</a>
+    </nav>
+    <div class="footer-info">
+      <p>📞 052-627-6333　／　FAX 052-627-6335</p>
+      <p>〒476-0002 愛知県東海市名和町山畑3番地1</p>
+      <p>営業：月〜土 9:00〜17:00　定休：日曜・祝日</p>
+    </div>
+    <p class="footer-copy">© 2024 合同会社ネクストグロース　児童発達支援 エミエル</p>
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('active', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+  });
+  function closeMobile() {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+  }
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+  });
+</script>
+
+</body>
+</html>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #333;
+    overflow-x: hidden;
+    background: #fff;
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ===== NAV ===== */
+  #nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    transition: box-shadow 0.3s;
+  }
+  #nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.12); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: 6px 24px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo-img { height: 80px; width: auto; object-fit: contain; display: block; flex-shrink: 0; }
+  .nav-logo-sub { font-size: 11px; color: #999; white-space: nowrap; }
+  .nav-menu { display: flex; list-style: none; gap: 2px; margin-left: auto; }
+  .nav-menu a {
+    padding: 6px 8px; border-radius: 20px;
+    font-size: 0.82rem; font-weight: 500; color: #555;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-menu a:hover { background: #FFE8ED; color: #FF6B8A; }
+  .nav-menu a.nav-active { background: #FFE8ED; color: #FF6B8A; font-weight: 700; }
+  .btn-line {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #06C755; color: #fff;
+    padding: 12px 26px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 4px 16px rgba(6,199,85,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-line:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(6,199,85,0.45); }
+  .nav-line { font-size: 0.82rem; padding: 9px 16px; white-space: nowrap; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer;
+    padding: 4px; margin-left: auto;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2.5px;
+    background: #FF6B8A; border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5.5px, 5.5px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5.5px, -5.5px); }
+  .mobile-menu {
+    display: none; position: fixed; top: 62px; left: 0; right: 0;
+    background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 8px 0 16px; z-index: 999;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu ul { list-style: none; }
+  .mobile-menu li { border-bottom: 1px solid #f5f5f5; }
+  .mobile-menu a { display: block; padding: 14px 24px; font-weight: 500; color: #555; }
+  .mobile-menu a:hover { color: #FF6B8A; }
+  .mobile-line { margin: 12px 24px; text-align: center; justify-content: center; border-radius: 50px; }
+
+  /* ===== MAIN ===== */
+  main { padding-top: 92px; }
+
+  /* ===== FOOTER ===== */
+  #footer { background: #2C3E50; color: #ccc; }
+  .footer-wave { line-height: 0; }
+  .footer-wave svg { display: block; width: 100%; height: 60px; }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 40px 24px 36px; text-align: center;
+  }
+  .footer-logo {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; font-size: 1.1rem; font-weight: 700;
+    color: #fff; margin-bottom: 28px;
+  }
+  .footer-nav { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+  .footer-nav a {
+    padding: 6px 12px; border-radius: 20px;
+    font-size: 0.83rem; color: #aaa;
+    transition: color 0.2s, background 0.2s;
+  }
+  .footer-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .footer-info { margin-bottom: 22px; }
+  .footer-info p { font-size: 0.85rem; color: #aaa; margin: 5px 0; }
+  .footer-copy { font-size: 0.75rem; color: #666; }
+
+  @media (max-width: 768px) {
+    .nav-menu, .nav-line { display: none; }
+    .hamburger { display: flex; }
+    main { padding-top: 80px; }
+  }
+</style>

@@ -1,0 +1,223 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, heroImage, tags } = post.data;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<BlogLayout
+  title={`${title}｜エミエルブログ`}
+  description={description}
+  ogImage={heroImage}
+>
+
+  <div class="post-wrap">
+
+    <article class="post-article">
+
+      <header class="post-header">
+        {heroImage ? (
+          <div class="post-hero-wrap">
+            <img src={heroImage} alt={title} class="post-hero-img" />
+          </div>
+        ) : (
+          <div class="post-hero-placeholder" aria-hidden="true">✏️</div>
+        )}
+        <div class="container">
+          <div class="post-meta">
+            {tags.length > 0 && (
+              <div class="post-tags">
+                {tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            <h1 class="post-title">{title}</h1>
+            <time class="post-date" datetime={pubDate.toISOString()}>
+              📅 {formatDate(pubDate)}
+            </time>
+          </div>
+        </div>
+      </header>
+
+      <div class="post-body">
+        <div class="container">
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <div class="post-back">
+      <div class="container">
+        <a href="/blog" class="back-link">← ブログ一覧に戻る</a>
+      </div>
+    </div>
+
+    <div class="post-cta">
+      <div class="container">
+        <p class="cta-text">見学・ご相談はお気軽にどうぞ</p>
+        <div class="cta-btns">
+          <a href="https://lin.ee/TfyyTxI" target="_blank" rel="noopener" class="btn-line btn-lg">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+            LINEで相談する
+          </a>
+          <a href="tel:0526276333" class="btn-tel btn-lg">📞 052-627-6333</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</BlogLayout>
+
+<style>
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  .post-wrap { padding-bottom: 80px; }
+
+  /* ===== HEADER ===== */
+  .post-header { margin-bottom: 48px; }
+
+  .post-hero-wrap { max-height: 440px; overflow: hidden; }
+  .post-hero-img { width: 100%; height: 440px; object-fit: cover; }
+
+  .post-hero-placeholder {
+    height: 240px;
+    background: linear-gradient(135deg, #ffe4ee, #e8f8ff);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+  }
+
+  .post-meta {
+    padding: 36px 0 0;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  .post-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    background: #FFE8ED; color: #FF6B8A;
+    font-size: 0.75rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  .post-title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 900; color: #333; line-height: 1.4;
+  }
+
+  .post-date { font-size: 0.85rem; color: #aaa; }
+
+  /* ===== BODY ===== */
+  .post-body { margin-bottom: 48px; }
+
+  /* Prose / Markdown styles */
+  .prose { font-size: 1rem; line-height: 2; color: #444; }
+  .prose :global(h2) {
+    font-size: 1.5rem; font-weight: 900; color: #333;
+    margin: 2.5em 0 0.8em;
+    padding-bottom: 0.4em;
+    border-bottom: 3px solid #FF6B8A;
+  }
+  .prose :global(h3) {
+    font-size: 1.2rem; font-weight: 800; color: #333;
+    margin: 2em 0 0.6em;
+    padding-left: 12px;
+    border-left: 4px solid #FF6B8A;
+  }
+  .prose :global(p) { margin: 0 0 1.4em; }
+  .prose :global(ul),
+  .prose :global(ol) { margin: 0 0 1.4em 1.5em; }
+  .prose :global(li) { margin-bottom: 0.5em; }
+  .prose :global(strong) { font-weight: 700; color: #333; }
+  .prose :global(a) { color: #FF6B8A; text-decoration: underline; }
+  .prose :global(a:hover) { color: #e05478; }
+  .prose :global(blockquote) {
+    margin: 1.5em 0;
+    padding: 16px 20px;
+    background: #fff7f9;
+    border-left: 4px solid #FF6B8A;
+    border-radius: 0 12px 12px 0;
+    color: #666;
+  }
+  .prose :global(hr) {
+    border: none;
+    border-top: 2px dashed #f0c0cc;
+    margin: 2.5em 0;
+  }
+  .prose :global(img) {
+    border-radius: 12px;
+    margin: 1.5em 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+  .prose :global(code) {
+    background: #f5f5f5; padding: 2px 6px;
+    border-radius: 4px; font-size: 0.9em;
+  }
+
+  /* ===== BACK LINK ===== */
+  .post-back { margin-bottom: 60px; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.9rem; font-weight: 600; color: #FF6B8A;
+    padding: 8px 0;
+    transition: gap 0.2s;
+  }
+  .back-link:hover { gap: 10px; }
+
+  /* ===== CTA ===== */
+  .post-cta {
+    background: linear-gradient(135deg, #ffe4ee, #fff7e0, #e8f8ff);
+    border-radius: 24px; padding: 48px 24px;
+    text-align: center;
+    max-width: 800px; margin: 0 24px;
+  }
+  .cta-text {
+    font-size: 1.1rem; font-weight: 700; color: #555;
+    margin-bottom: 24px;
+  }
+  .cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .btn-line {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #06C755; color: #fff;
+    padding: 12px 26px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 4px 16px rgba(6,199,85,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-line:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(6,199,85,0.45); }
+  .btn-tel {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #FF7043; color: #fff;
+    padding: 12px 26px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 4px 16px rgba(255,112,67,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-tel:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,112,67,0.45); }
+  .btn-lg { padding: 16px 34px; font-size: 1.05rem; }
+
+  @media (max-width: 580px) {
+    .post-cta { margin: 0 16px; }
+    .cta-btns { flex-direction: column; align-items: center; }
+  }
+</style>
