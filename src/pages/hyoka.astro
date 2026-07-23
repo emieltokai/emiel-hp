@@ -1,0 +1,142 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+
+const evaluationReleases = [
+  {
+    fiscalYear: '令和6年度',
+    publishedLabel: '公表日：2025年3月28日',
+    documents: [
+      { title: '令和6年度 事業所における自己評価総括表', file: '令和6年度 事業所における自己評価総括表.pdf' },
+      { title: '令和6年度 事業所における自己評価結果', file: '令和6年度 事業所における自己評価結果.pdf' },
+      { title: '令和6年度 保護者等向け児童発達支援評価表', file: '令和6年度_保護者等向け児童発達支援評価表_見やすい版.pdf' },
+      { title: '令和6年度 支援プログラム', file: '令和６年度支援プログラム.pdf' },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  title="評価表 情報公開｜児童発達支援エミエル"
+  description="児童発達支援エミエルの自己評価・保護者アンケートに基づく評価表を公開しています。"
+>
+
+  <section class="hyoka-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <h1 class="hero-title"><span>評価表 情報公開</span></h1>
+      <p class="hero-sub">評価表の各種ご案内</p>
+    </div>
+  </section>
+
+  <section class="hyoka-content">
+    <div class="container">
+      <div class="lead-box">
+        <h2>評価表について</h2>
+      </div>
+      <p class="lead-text">
+        児童発達支援エミエルでは、児童発達支援におけるサービス内容の質について、事業所による自己評価や保護者様等へのアンケート調査などを実施し、
+        より良いサービス提供、療育を目指しております。<br />
+        また、皆様に安心してご利用いただける事業所として、評価結果を以下に公表しております。<br />
+        （評価基準は厚生労働省が定める「児童発達支援ガイドライン」をもとに、作成、実施いたしました。）
+      </p>
+
+      {evaluationReleases.map(release => (
+        <div class="release-block">
+          <h3 class="release-title">{release.fiscalYear}評価表</h3>
+          <div class="release-date">{release.publishedLabel}</div>
+          <ul class="doc-list">
+            {release.documents.map(doc => (
+              <li>
+                <a href={`/documents/hyoka/${encodeURIComponent(doc.file)}`} target="_blank" rel="noopener">
+                  <span class="doc-icon" aria-hidden="true">PDF</span>
+                  <span class="doc-title">{doc.title}(PDF)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+</BlogLayout>
+
+<style>
+  .hyoka-hero {
+    position: relative;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #4a6fa5, #6fa8dc 60%, #8fc9e8), url('/image/外観.png') center/cover no-repeat;
+    background-blend-mode: multiply;
+    padding: 40px 24px;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 40, 70, 0.35);
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-title {
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    font-weight: 900;
+    margin-bottom: 14px;
+  }
+  .hero-title span {
+    background: #2b4c8c;
+    color: #fff;
+    padding: 10px 28px;
+    display: inline-block;
+    border-radius: 4px;
+  }
+  .hero-sub { color: #fff; font-size: 1rem; font-weight: 500; }
+
+  .hyoka-content { background: #FFF8E9; padding: 60px 0 100px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  .lead-box {
+    background: repeating-linear-gradient(45deg, #f3e6c8, #f3e6c8 10px, #ede0c0 10px, #ede0c0 20px);
+    border-radius: 8px;
+    padding: 20px 28px;
+    margin-bottom: 28px;
+  }
+  .lead-box h2 { font-size: 1.3rem; font-weight: 800; color: #333; }
+
+  .lead-text { color: #444; line-height: 1.9; margin-bottom: 44px; }
+
+  .release-block { margin-bottom: 40px; }
+  .release-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #4CAF50;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .release-date {
+    border-left: 4px solid #4CAF50;
+    padding-left: 12px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 16px;
+  }
+
+  .doc-list { list-style: none; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; background: #fff; }
+  .doc-list li { border-bottom: 1px solid #ddd; }
+  .doc-list li:last-child { border-bottom: none; }
+  .doc-list a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    transition: background 0.2s;
+  }
+  .doc-list a:hover { background: #FFF3E0; }
+  .doc-icon {
+    background: #D32F2F; color: #fff;
+    font-size: 0.7rem; font-weight: 800;
+    padding: 3px 6px; border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .doc-title { color: #C0392B; font-weight: 600; }
+</style>
